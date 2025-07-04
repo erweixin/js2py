@@ -1,0 +1,107 @@
+---
+title: Python 代码编辑器测试
+description: 这是一个测试页面，用于验证 PythonEditor 组件的功能
+display: false
+---
+
+# Python 代码编辑器测试
+
+这是一个测试页面，用于验证 PythonEditor 组件的功能。
+
+## 基础 Python 代码示例
+
+<PythonEditor title="基础 Python 示例">
+```python
+# Python 变量定义
+name = "张三"
+age = 25
+is_student = True
+
+print(f"姓名: {name}")
+print(f"年龄: {age}")
+print(f"是否学生: {is_student}")
+
+# 列表操作
+numbers = [1, 2, 3, 4, 5]
+squares = [x**2 for x in numbers]
+print(f"数字列表: {numbers}")
+print(f"平方数: {squares}")
+```
+</PythonEditor>
+
+## Python vs JavaScript 对比
+
+<PythonEditor compare title="Python vs JavaScript 对比">
+```python
+# Python 字典操作
+person = {"name": "李四", "age": 30, "city": "北京"}
+print(f"姓名: {person['name']}")
+print(f"年龄: {person['age']}")
+
+# 列表推导式
+numbers = [1, 2, 3, 4, 5]
+evens = [x for x in numbers if x % 2 == 0]
+print(f"偶数: {evens}")
+```
+
+```javascript
+// JavaScript 对象操作
+const person = {name: "李四", age: 30, city: "北京"};
+console.log(`姓名: ${person.name}`);
+console.log(`年龄: ${person.age}`);
+
+// 数组过滤
+const numbers = [1, 2, 3, 4, 5];
+const evens = numbers.filter(x => x % 2 === 0);
+console.log(`偶数: ${evens}`);
+```
+</PythonEditor>
+
+## 函数定义示例
+
+<PythonEditor title="Python 函数示例">
+```python
+def greet(name, greeting="你好"):
+    """简单的问候函数"""
+    return f"{greeting}, {name}!"
+
+def calculate_area(length, width):
+    """计算矩形面积"""
+    return length * width
+
+# 测试函数
+print(greet("世界"))
+print(greet("小明", "早上好"))
+print(f"矩形面积: {calculate_area(5, 3)}")
+
+# 使用 lambda 函数
+square = lambda x: x ** 2
+print(f"5 的平方: {square(5)}")
+```
+</PythonEditor>
+
+## 错误处理示例
+
+<PythonEditor title="错误处理示例">
+```python
+try:
+    # 尝试除以零
+    result = 10 / 0
+    print(result)
+except ZeroDivisionError:
+    print("错误: 不能除以零")
+except Exception as e:
+    print(f"其他错误: {e}")
+else:
+    print("没有发生错误")
+finally:
+    print("总是执行这里")
+
+# 列表索引错误处理
+numbers = [1, 2, 3]
+try:
+    print(numbers[5])
+except IndexError:
+    print("错误: 索引超出范围")
+```
+</PythonEditor> 

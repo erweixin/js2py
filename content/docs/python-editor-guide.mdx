@@ -1,0 +1,149 @@
+---
+title: Python 代码编辑器使用指南
+description: 如何在 MDX 文档中使用 PythonEditor 组件
+display: false
+---
+
+# Python 代码编辑器使用指南
+
+本项目提供了一个交互式的 Python 代码编辑器组件，允许用户在文档中直接编写、编辑和运行 Python 代码。
+
+## 基本用法
+
+### 简单的 Python 代码编辑器
+
+在 MDX 中，你可以使用 `<PythonEditor>` 标签来创建交互式的 Python 代码编辑器。
+
+### 带配置的编辑器
+
+你可以通过属性来配置编辑器的行为，比如主题、只读模式等。
+
+## 对比模式
+
+你可以同时显示 Python 和 JavaScript 代码，方便对比学习。只需要添加 `compare` 属性即可。
+
+## 配置选项
+
+| 属性 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `title` | string | 'Python 代码编辑器' | 编辑器标题 |
+| `theme` | 'vs-light' \| 'vs-dark' | 'vs-light' | 代码主题 |
+| `readOnly` | boolean | false | 是否只读 |
+| `showOutput` | boolean | true | 是否显示输出区域 |
+| `compare` | boolean | false | 是否启用对比模式 |
+
+## 功能特性
+
+### ✅ 已实现功能
+
+- **代码编辑**: 使用 Monaco Editor 提供专业的代码编辑体验
+- **语法高亮**: 支持 Python 和 JavaScript 语法高亮
+- **代码执行**: 在浏览器中运行 Python 代码（使用 Pyodide）
+- **输出显示**: 实时显示代码执行结果
+- **错误处理**: 友好的错误提示
+- **对比模式**: 同时显示 Python 和 JavaScript 代码
+- **响应式设计**: 适配不同屏幕尺寸
+- **主题支持**: 支持浅色和深色主题
+
+### 🔧 技术实现
+
+- **前端**: React + TypeScript
+- **编辑器**: Monaco Editor（VS Code 的编辑器核心）
+- **Python 执行**: Pyodide（Python 在浏览器中运行）
+- **样式**: Tailwind CSS
+- **构建**: Next.js 15
+
+## 使用示例
+
+### 1. 基础语法示例
+
+<PythonEditor title="Python 基础语法">
+```python
+# 变量定义
+name = "李四"
+age = 30
+is_student = False
+
+# 条件语句
+if age >= 18:
+    print(f"{name} 是成年人")
+else:
+    print(f"{name} 是未成年人")
+
+# 循环
+for i in range(1, 6):
+    print(f"数字: {i}")
+```
+</PythonEditor>
+
+### 2. 函数定义示例
+
+<PythonEditor title="Python 函数">
+```python
+def greet(name, greeting="你好"):
+    """简单的问候函数"""
+    return f"{greeting}, {name}!"
+
+def calculate_area(length, width):
+    """计算矩形面积"""
+    return length * width
+
+# 测试函数
+print(greet("世界"))
+print(greet("小明", "早上好"))
+print(f"矩形面积: {calculate_area(5, 3)}")
+```
+</PythonEditor>
+
+### 3. 数据结构示例
+
+<PythonEditor title="Python 数据结构">
+```python
+# 列表
+fruits = ["苹果", "香蕉", "橙子"]
+print(f"水果列表: {fruits}")
+
+# 字典
+person = {"name": "王五", "age": 28, "city": "上海"}
+print(f"姓名: {person['name']}")
+print(f"城市: {person['city']}")
+
+# 集合
+numbers = {1, 2, 3, 4, 5, 5, 4}  # 自动去重
+print(f"数字集合: {numbers}")
+```
+</PythonEditor>
+
+## 注意事项
+
+1. **首次加载**: Python 环境需要下载，首次使用可能需要几秒钟
+2. **网络要求**: 需要网络连接来下载 Pyodide 运行时
+3. **功能限制**: 某些 Python 库可能无法在浏览器中运行
+4. **安全限制**: 代码在浏览器沙箱中运行，无法访问文件系统
+
+## 故障排除
+
+### 常见问题
+
+1. **Python 环境加载失败**
+   - 检查网络连接
+   - 刷新页面重试
+
+2. **代码执行错误**
+   - 检查 Python 语法
+   - 确保代码不包含不支持的库
+
+3. **编辑器不显示**
+   - 确保使用了正确的 MDX 语法
+   - 检查组件是否正确注册
+
+## 开发信息
+
+这个组件是为 JavaScript 开发者学习 Python 而设计的，特别适合：
+
+- 前端开发者学习 Python
+- 代码对比学习
+- 交互式教程
+- 在线编程练习
+
+通过这个编辑器，你可以在文档中直接体验 Python 编程，无需安装任何本地环境！ 

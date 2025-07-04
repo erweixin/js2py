@@ -9,6 +9,7 @@ import { notFound } from "next/navigation"
 import defaultMdxComponents from "fumadocs-ui/mdx"
 import { Code } from "@/components/code"
 import { SideBySideCode } from "@/components/side-by-side-code"
+import PythonEditor from "@/components/python-editor"
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>
@@ -24,7 +25,7 @@ export default async function Page(props: {
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
-        <MDX components={{ ...defaultMdxComponents, Code, SideBySideCode }} />
+        <MDX components={{ ...defaultMdxComponents, Code, SideBySideCode, PythonEditor }} />
       </DocsBody>
     </DocsPage>
   )
