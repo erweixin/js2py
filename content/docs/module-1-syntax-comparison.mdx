@@ -1,0 +1,796 @@
+---
+title: "JavaScript vs Python 语法对比"
+description: "从 JavaScript 开发者视角深入对比两种语言的语法差异，快速掌握 Python 语法"
+---
+
+## 1. 引言
+
+### 为什么需要语法对比？
+
+作为 JavaScript 开发者，学习 Python 最大的挑战之一就是适应不同的语法风格。通过系统性的语法对比，我们可以：
+
+- 快速理解 Python 的语法规则
+- 避免常见的语法错误
+- 建立两种语言之间的概念映射
+- 提高学习效率
+
+> 💡 **学习策略**：将 Python 语法视为 JavaScript 的"方言"，而不是完全陌生的语言
+
+## 2. 基础语法对比
+
+### 2.1 变量声明和赋值
+
+<SideBySideCode>
+```javascript !! JavaScript
+// 变量声明需要关键字
+let name = "张三";
+const age = 25;
+var oldWay = "不推荐";
+
+// 解构赋值
+const [first, second] = [1, 2];
+const { name: userName, age: userAge } = { name: "李四", age: 30 };
+
+// 模板字符串
+const message = `你好，${name}！你今年${age}岁。`;
+```
+
+```python !! Python
+# 直接赋值，无需声明关键字
+name = "张三"
+age = 25
+
+# 解构赋值（Python 3.6+）
+first, second = 1, 2
+user_info = {"name": "李四", "age": 30}
+user_name, user_age = user_info["name"], user_info["age"]
+
+# 更优雅的解构方式
+user_info = {"name": "李四", "age": 30}
+user_name, user_age = user_info.values()
+
+# f-string（Python 3.6+）
+message = f"你好，{name}！你今年{age}岁。"
+```
+</SideBySideCode>
+
+**关键差异对比**
+
+| 特性 | JavaScript | Python | 说明 |
+|------|------------|--------|------|
+| **声明方式** | `let/const/var` | 直接赋值 | Python 无需声明关键字 |
+| **变量名** | camelCase | snake_case | Python 推荐下划线命名 |
+| **常量** | `const` | 约定俗成（全大写） | Python 没有真正的常量 |
+| **字符串格式化** | 模板字符串 | f-string | 两者都支持插值 |
+
+### 2.2 数据类型对比
+
+**基本数据类型**
+
+<SideBySideCode>
+```javascript !! JavaScript 基本类型
+// JavaScript 基本类型
+let string = "文本";
+let number = 42;
+let boolean = true;
+let nullValue = null;
+let undefinedValue = undefined;
+let symbol = Symbol("unique");
+
+// 引用类型
+let array = [1, 2, 3];
+let object = { key: "value" };
+let function = () => {};
+```
+
+```python !! Python 基本类型
+# Python 基本类型
+string = "文本"
+number = 42
+boolean = True  # 注意大写
+none_value = None  # 相当于 JavaScript 的 null
+complex_number = 3 + 4j  # 复数类型
+
+# 引用类型
+array = [1, 2, 3]  # 列表（可变）
+tuple_data = (1, 2, 3)  # 元组（不可变）
+dictionary = {"key": "value"}  # 字典
+set_data = {1, 2, 3}  # 集合
+```
+</SideBySideCode>
+
+**类型检查对比**
+
+<SideBySideCode>
+```javascript !! JavaScript
+// JavaScript 类型检查
+console.log(typeof "hello");        // "string"
+console.log(typeof 42);             // "number"
+console.log(typeof true);           // "boolean"
+console.log(typeof null);           // "object" (JavaScript 的著名 bug)
+console.log(typeof undefined);      // "undefined"
+console.log(Array.isArray([1,2,3])); // true
+```
+
+```python !! Python
+# Python 类型检查
+print(type("hello"))        # <class 'str'>
+print(type(42))             # <class 'int'>
+print(type(True))           # <class 'bool'>
+print(type(None))           # <class 'NoneType'>
+print(isinstance([1,2,3], list))  # True
+```
+</SideBySideCode>
+
+### 2.3 控制流语句
+
+#### 2.3.1 条件语句
+
+**JavaScript 风格**
+```javascript
+// if-else 语句
+let age = 18;
+if (age >= 18) {
+    console.log("成年人");
+} else if (age >= 12) {
+    console.log("青少年");
+} else {
+    console.log("儿童");
+}
+
+// 三元运算符
+let status = age >= 18 ? "成年人" : "未成年人";
+
+// switch 语句
+let day = "Monday";
+switch (day) {
+    case "Monday":
+        console.log("星期一");
+        break;
+    case "Tuesday":
+        console.log("星期二");
+        break;
+    default:
+        console.log("其他日子");
+}
+```
+
+**Python 风格**
+```python
+# if-elif-else 语句
+age = 18
+if age >= 18:
+    print("成年人")
+elif age >= 12:
+    print("青少年")
+else:
+    print("儿童")
+
+# 三元运算符（条件表达式）
+status = "成年人" if age >= 18 else "未成年人"
+
+# match 语句（Python 3.10+）
+day = "Monday"
+match day:
+    case "Monday":
+        print("星期一")
+    case "Tuesday":
+        print("星期二")
+    case _:
+        print("其他日子")
+```
+
+#### 2.3.2 循环语句
+
+**JavaScript 风格**
+```javascript
+// for 循环
+for (let i = 0; i < 5; i++) {
+    console.log(i);
+}
+
+// for...of 循环（遍历可迭代对象）
+const numbers = [1, 2, 3, 4, 5];
+for (const num of numbers) {
+    console.log(num);
+}
+
+// for...in 循环（遍历对象属性）
+const person = { name: "张三", age: 25 };
+for (const key in person) {
+    console.log(`${key}: ${person[key]}`);
+}
+
+// while 循环
+let count = 0;
+while (count < 5) {
+    console.log(count);
+    count++;
+}
+
+// forEach 方法
+numbers.forEach(num => console.log(num));
+```
+
+**Python 风格**
+```python
+# for 循环（类似 JavaScript 的 for...of）
+for i in range(5):
+    print(i)
+
+# 遍历列表
+numbers = [1, 2, 3, 4, 5]
+for num in numbers:
+    print(num)
+
+# 遍历字典
+person = {"name": "张三", "age": 25}
+for key, value in person.items():
+    print(f"{key}: {value}")
+
+# 只遍历键
+for key in person.keys():
+    print(key)
+
+# 只遍历值
+for value in person.values():
+    print(value)
+
+# while 循环
+count = 0
+while count < 5:
+    print(count)
+    count += 1
+
+# 列表推导式（Python 特色）
+squares = [x**2 for x in range(5)]  # [0, 1, 4, 9, 16]
+```
+
+## 3. 函数定义和调用
+
+### 3.1 函数声明对比
+
+**JavaScript 风格**
+```javascript
+// 函数声明
+function greet(name) {
+    return `你好，${name}！`;
+}
+
+// 函数表达式
+const greet2 = function(name) {
+    return `你好，${name}！`;
+};
+
+// 箭头函数
+const greet3 = (name) => {
+    return `你好，${name}！`;
+};
+
+// 简写箭头函数
+const greet4 = name => `你好，${name}！`;
+
+// 默认参数
+function greet5(name = "世界") {
+    return `你好，${name}！`;
+}
+
+// 解构参数
+function greet6({ name, age }) {
+    return `你好，${name}！你今年${age}岁。`;
+}
+```
+
+**Python 风格**
+```python
+# 函数定义
+def greet(name):
+    return f"你好，{name}！"
+
+# 默认参数
+def greet2(name="世界"):
+    return f"你好，{name}！"
+
+# 类型注解（Python 3.5+）
+def greet3(name: str) -> str:
+    return f"你好，{name}！"
+
+# 多参数
+def greet4(name, age):
+    return f"你好，{name}！你今年{age}岁。"
+
+# 关键字参数
+def greet5(name, age=None):
+    if age:
+        return f"你好，{name}！你今年{age}岁。"
+    return f"你好，{name}！"
+
+# 解构参数（使用字典）
+def greet6(person):
+    name = person["name"]
+    age = person["age"]
+    return f"你好，{name}！你今年{age}岁。"
+```
+
+### 3.2 函数调用对比
+
+**JavaScript 风格**
+```javascript
+// 基本调用
+greet("张三");
+
+// 解构调用
+greet6({ name: "李四", age: 25 });
+
+// 方法调用
+const obj = {
+    name: "王五",
+    greet() {
+        return `你好，${this.name}！`;
+    }
+};
+obj.greet();
+```
+
+**Python 风格**
+```python
+# 基本调用
+greet("张三")
+
+# 关键字参数调用
+greet4(name="李四", age=25)
+greet4(age=25, name="李四")  # 参数顺序可以调换
+
+# 字典解包
+person = {"name": "王五", "age": 30}
+greet6(person)
+
+# 方法调用
+class Person:
+    def __init__(self, name):
+        self.name = name
+    
+    def greet(self):
+        return f"你好，{self.name}！"
+
+person = Person("赵六")
+person.greet()
+```
+
+## 4. 数据结构对比
+
+### 4.1 数组 vs 列表
+
+**JavaScript 数组**
+```javascript
+// 创建数组
+const arr = [1, 2, 3, 4, 5];
+
+// 添加元素
+arr.push(6);           // 末尾添加
+arr.unshift(0);        // 开头添加
+arr.splice(2, 0, 2.5); // 中间插入
+
+// 删除元素
+arr.pop();             // 删除末尾
+arr.shift();           // 删除开头
+arr.splice(2, 1);      // 删除指定位置
+
+// 查找元素
+const index = arr.indexOf(3);
+const found = arr.find(x => x > 3);
+
+// 数组方法
+const doubled = arr.map(x => x * 2);
+const filtered = arr.filter(x => x > 2);
+const sum = arr.reduce((acc, x) => acc + x, 0);
+```
+
+**Python 列表**
+```python
+# 创建列表
+arr = [1, 2, 3, 4, 5]
+
+# 添加元素
+arr.append(6)          # 末尾添加
+arr.insert(0, 0)       # 开头添加
+arr.insert(2, 2.5)     # 中间插入
+
+# 删除元素
+arr.pop()              # 删除末尾
+arr.pop(0)             # 删除指定位置
+del arr[2]             # 删除指定位置
+arr.remove(3)          # 删除指定值
+
+# 查找元素
+index = arr.index(3)   # 查找索引
+found = next((x for x in arr if x > 3), None)
+
+# 列表推导式
+doubled = [x * 2 for x in arr]
+filtered = [x for x in arr if x > 2]
+sum_result = sum(arr)
+```
+
+### 4.2 对象 vs 字典
+
+**JavaScript 对象**
+```javascript
+// 创建对象
+const person = {
+    name: "张三",
+    age: 25,
+    greet() {
+        return `你好，${this.name}！`;
+    }
+};
+
+// 访问属性
+console.log(person.name);
+console.log(person["name"]);
+
+// 添加/修改属性
+person.city = "北京";
+person["job"] = "程序员";
+
+// 删除属性
+delete person.age;
+
+// 遍历对象
+for (const key in person) {
+    console.log(`${key}: ${person[key]}`);
+}
+
+Object.keys(person).forEach(key => {
+    console.log(`${key}: ${person[key]}`);
+});
+```
+
+**Python 字典**
+```python
+# 创建字典
+person = {
+    "name": "张三",
+    "age": 25
+}
+
+# 访问属性
+print(person["name"])
+print(person.get("name"))  # 安全访问
+print(person.get("city", "未知"))  # 默认值
+
+# 添加/修改属性
+person["city"] = "北京"
+person["job"] = "程序员"
+
+# 删除属性
+del person["age"]
+person.pop("age", None)  # 安全删除
+
+# 遍历字典
+for key, value in person.items():
+    print(f"{key}: {value}")
+
+for key in person.keys():
+    print(f"{key}: {person[key]}")
+
+for value in person.values():
+    print(value)
+```
+
+### 4.3 集合对比
+
+**JavaScript Set**
+```javascript
+// 创建集合
+const set = new Set([1, 2, 3, 3, 4]); // 自动去重
+
+// 添加元素
+set.add(5);
+
+// 删除元素
+set.delete(3);
+
+// 检查元素
+console.log(set.has(2));
+
+// 集合操作
+const set1 = new Set([1, 2, 3]);
+const set2 = new Set([3, 4, 5]);
+
+// 并集
+const union = new Set([...set1, ...set2]);
+
+// 交集
+const intersection = new Set([...set1].filter(x => set2.has(x)));
+
+// 差集
+const difference = new Set([...set1].filter(x => !set2.has(x)));
+```
+
+**Python 集合**
+```python
+# 创建集合
+set_data = {1, 2, 3, 3, 4}  # 自动去重
+
+# 添加元素
+set_data.add(5)
+
+# 删除元素
+set_data.remove(3)  # 如果不存在会报错
+set_data.discard(3)  # 如果不存在不会报错
+
+# 检查元素
+print(2 in set_data)
+
+# 集合操作
+set1 = {1, 2, 3}
+set2 = {3, 4, 5}
+
+# 并集
+union = set1 | set2
+union = set1.union(set2)
+
+# 交集
+intersection = set1 & set2
+intersection = set1.intersection(set2)
+
+# 差集
+difference = set1 - set2
+difference = set1.difference(set2)
+```
+
+## 5. 错误处理对比
+
+### 5.1 异常处理
+
+**JavaScript try-catch**
+```javascript
+// 基本错误处理
+try {
+    const result = 10 / 0;
+    console.log(result);
+} catch (error) {
+    console.error("发生错误:", error.message);
+} finally {
+    console.log("总是执行");
+}
+
+// 自定义错误
+class CustomError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "CustomError";
+    }
+}
+
+// 抛出错误
+function divide(a, b) {
+    if (b === 0) {
+        throw new CustomError("除数不能为零");
+    }
+    return a / b;
+}
+
+// 异步错误处理
+async function fetchData() {
+    try {
+        const response = await fetch("https://api.example.com/data");
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("请求失败:", error);
+        throw error;
+    }
+}
+```
+
+**Python try-except**
+```python
+# 基本错误处理
+try:
+    result = 10 / 0
+    print(result)
+except ZeroDivisionError as e:
+    print(f"发生错误: {e}")
+except Exception as e:
+    print(f"其他错误: {e}")
+else:
+    print("没有异常时执行")
+finally:
+    print("总是执行")
+
+# 自定义异常
+class CustomError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+# 抛出异常
+def divide(a, b):
+    if b == 0:
+        raise CustomError("除数不能为零")
+    return a / b
+
+# 异步错误处理
+import asyncio
+import aiohttp
+
+async def fetch_data():
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get("https://api.example.com/data") as response:
+                data = await response.json()
+                return data
+    except Exception as e:
+        print(f"请求失败: {e}")
+        raise
+```
+
+## 6. 模块和导入对比
+
+### 6.1 模块系统
+
+**JavaScript 模块**
+```javascript
+// math.js
+export const add = (a, b) => a + b;
+export const subtract = (a, b) => a - b;
+
+export default class Calculator {
+    constructor() {
+        this.result = 0;
+    }
+    
+    add(x) {
+        this.result += x;
+        return this;
+    }
+}
+
+// main.js
+import Calculator, { add, subtract } from './math.js';
+import * as math from './math.js';
+
+const calc = new Calculator();
+console.log(add(5, 3));
+console.log(math.subtract(10, 4));
+```
+
+**Python 模块**
+```python
+# math_utils.py
+def add(a, b):
+    return a + b
+
+def subtract(a, b):
+    return a - b
+
+class Calculator:
+    def __init__(self):
+        self.result = 0
+    
+    def add(self, x):
+        self.result += x
+        return self
+
+# main.py
+from math_utils import add, subtract, Calculator
+import math_utils as math
+
+calc = Calculator()
+print(add(5, 3))
+print(math.subtract(10, 4))
+```
+
+## 7. 练习题
+
+### 练习 1：数据类型转换
+
+将以下 JavaScript 代码转换为 Python：
+
+```javascript
+// JavaScript 版本
+const numbers = [1, 2, 3, 4, 5];
+const doubled = numbers.map(x => x * 2);
+const evenNumbers = doubled.filter(x => x % 2 === 0);
+const sum = evenNumbers.reduce((acc, x) => acc + x, 0);
+console.log(sum);
+```
+
+<details>
+<summary>查看答案</summary>
+
+```python
+# Python 版本
+numbers = [1, 2, 3, 4, 5]
+doubled = [x * 2 for x in numbers]
+even_numbers = [x for x in doubled if x % 2 == 0]
+sum_result = sum(even_numbers)
+print(sum_result)
+```
+
+</details>
+
+### 练习 2：函数定义
+
+将以下 Python 函数转换为 JavaScript：
+
+```python
+# Python 版本
+def process_data(data, callback=None):
+    result = []
+    for item in data:
+        if callback:
+            processed = callback(item)
+        else:
+            processed = item * 2
+        result.append(processed)
+    return result
+
+# 使用示例
+numbers = [1, 2, 3, 4, 5]
+result = process_data(numbers, lambda x: x ** 2)
+print(result)
+```
+
+<details>
+<summary>查看答案</summary>
+
+```javascript
+// JavaScript 版本
+function processData(data, callback = null) {
+    const result = [];
+    for (const item of data) {
+        let processed;
+        if (callback) {
+            processed = callback(item);
+        } else {
+            processed = item * 2;
+        }
+        result.push(processed);
+    }
+    return result;
+}
+
+// 使用示例
+const numbers = [1, 2, 3, 4, 5];
+const result = processData(numbers, x => x ** 2);
+console.log(result);
+```
+
+</details>
+
+## 8. 总结
+
+### 关键差异总结
+
+| 方面 | JavaScript | Python | 学习建议 |
+|------|------------|--------|----------|
+| **语法风格** | 大括号 + 分号 | 缩进敏感 | 注意 Python 的缩进规则 |
+| **变量声明** | 需要关键字 | 直接赋值 | 适应 Python 的简洁性 |
+| **命名规范** | camelCase | snake_case | 遵循 Python 的命名约定 |
+| **字符串格式化** | 模板字符串 | f-string | 两者都很直观 |
+| **循环语法** | for/while | for/while | Python 的 for 更简洁 |
+| **函数定义** | function/箭头函数 | def | 语法差异较大 |
+| **错误处理** | try-catch | try-except | 概念相似，语法不同 |
+
+### 学习建议
+
+1. **从相似点开始**：先学习两种语言相似的概念
+2. **对比学习**：同时编写两种语言的代码
+3. **实践为主**：多做练习题和项目
+4. **注意细节**：关注语法细节的差异
+5. **建立映射**：在心中建立两种语言的对应关系
+
+### 下一步学习
+
+在掌握了基础语法对比后，建议继续学习：
+
+- 面向对象编程对比
+- 异步编程模式
+- 包管理和依赖管理
+- 测试框架对比
+- 实际项目开发
+
+记住：语法只是工具，重要的是理解编程思想和解决问题的方法。Python 和 JavaScript 都是优秀的语言，各有特色，掌握两者会让你成为更全面的开发者。 

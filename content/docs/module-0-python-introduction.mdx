@@ -9,11 +9,11 @@ description: "从 JavaScript 开发者视角了解 Python 生态系统，掌握 
 
 作为前端开发者，你可能已经精通 JavaScript 生态系统，但 Python 正在成为现代开发中不可或缺的技能。以下是学习 Python 的几个重要原因：
 
-- **AI**
-- **AI**
-- **AI**
+- AI 开发：如训练模型、数据预处理等
+- 数据科学：如数据分析、可视化
+- 自动化工具链：如爬虫、自动办公脚本
 
-重要的事情说三遍
+> 最重要的是：Python 是 AI 的第一语言！
 
 ## 2. Python 语言基础
 
@@ -25,7 +25,15 @@ Python 是由 Guido van Rossum 在 1991 年创建的编程语言，以其简洁�
 ```python
 # Python 的核心理念：简洁明了
 import this
+"""
+Beautiful is better than ugly.
+Explicit is better than implicit.
+Simple is better than complex.
+Complex is better than complicated.
+Flat is better than nested.
+"""
 # 输出 "The Zen of Python" - Python 的设计哲学
+print("The Zen of Python")
 ```
 
 **与 JavaScript 的核心对比**
@@ -105,11 +113,10 @@ pip 是 Python 的官方包管理器，类似于 JavaScript 生态中的 npm 或
 | 功能 | npm/yarn | pip | 说明 |
 |------|----------|-----|------|
 | **安装包** | `npm install package` | `pip install package` | 安装单个包 |
-| **全局安装** | `npm install -g package` | `pip install package` | pip 默认全局安装 |
-| **开发依赖** | `npm install --save-dev` | `pip install package` | pip 不区分开发依赖 |
+| **全局安装** | `npm install -g package` | `pip install package` | pip 默认在当前环境中安装依赖 |
+| **开发依赖** | `npm install --save-dev` | `pip install package` | pip 本身不区分依赖类型，但可以通过多个 requirements 文件手动管理开发依赖和生产依赖。 |
 | **卸载包** | `npm uninstall package` | `pip uninstall package` | 移除已安装的包 |
 | **列出包** | `npm list` | `pip list` | 显示已安装的包 |
-| **搜索包** | `npm search package` | `pip search package` | 搜索可用包 |
 | **更新包** | `npm update package` | `pip install --upgrade package` | 升级到最新版本 |
 
 **依赖文件对比**
@@ -377,7 +384,7 @@ Python 项目有标准的目录结构，让我们对比 JavaScript 和 Python �
 | **测试文件** | __tests__/ 或 test/ | tests/ | 测试代码 |
 | **文档** | docs/ | docs/ | 项目文档 |
 | **构建输出** | dist/ | build/ | 构建产物 |
-| **环境配置** | .env | .env | 环境变量 |
+| **环境配置** | .env | .env(配合 python-dotenv 库) | 环境变量 |
 
 **典型项目结构示例**
 
@@ -432,7 +439,7 @@ my-python-app/
 |------|----------------|------|----------|
 | **pip + requirements.txt** | npm + package.json | 简单直接 | 小型项目 |
 | **pipenv** | npm + package-lock.json | 虚拟环境集成 | 中型项目 |
-| **poetry** | yarn + yarn.lock | 现代化工具链 | 大型项目 |
+| **poetry** | yarn + webpack + npm scripts | 现代化工具链 | 大型项目 |
 | **pip-tools** | npm ci | 依赖编译 | 生产环境 |
 
 **依赖文件格式对比**
@@ -610,8 +617,8 @@ touch .vscode/settings.json .vscode/launch.json
 | 概念 | JavaScript 对应 | Python 工具 | 关键差异 |
 |------|----------------|-------------|----------|
 | **运行时** | Node.js | Python 解释器 | Python 需要显式版本管理 |
-| **包管理器** | npm/yarn | pip/poetry | Python 工具链更分散 |
-| **依赖隔离** | node_modules | 虚拟环境 | Python 隔离更彻底 |
+| **包管理器** | npm/yarn | pip/poetry | Python 工具链更分散，但 pip 和 poetry 都提供了依赖管理功能 |
+| **依赖隔离** | node_modules | 虚拟环境 | Python 的虚拟环境完全隔离 |
 | **版本管理** | nvm | pyenv | 功能相似，语法不同 |
 | **代码质量** | ESLint + Prettier | Flake8 + Black | Python 工具更专注 |
 

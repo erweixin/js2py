@@ -113,8 +113,8 @@ export default function HomePage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { id: 0, title: "入门引导", desc: "环境搭建与第一个 Python 脚本", gradient: "from-blue-500 to-cyan-500" },
-              { id: 1, title: "语法映射", desc: "JS vs Python 语法对比", gradient: "from-green-500 to-emerald-500" },
+              { id: 0, link: "module-0-python-introduction", title: "入门引导", desc: "环境搭建与 pip、venv、pyenv 等核心工具", gradient: "from-blue-500 to-cyan-500" },
+              { id: 1, link: "module-1-syntax-comparison", title: "语法映射", desc: "JS vs Python 语法对比", gradient: "from-green-500 to-emerald-500" },
               { id: 2, title: "模块系统", desc: "Python 模块化与项目组织", gradient: "from-purple-500 to-violet-500" },
               { id: 3, title: "面向对象", desc: "类、继承与函数式编程", gradient: "from-orange-500 to-red-500" },
               { id: 4, title: "异步编程", desc: "async/await 与事件循环", gradient: "from-red-500 to-pink-500" },
@@ -126,10 +126,10 @@ export default function HomePage() {
             ].map((module) => (
               <Link
                 key={module.id}
-                href={`/docs/module-${module.id}`}
+                href={`/docs/${module.link}`}
                 className="group relative block"
               >
-                                 <div className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl blur-xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl blur-xl"></div>
                 <div className="relative bg-slate-50 dark:bg-slate-800 rounded-2xl p-8 hover:bg-white dark:hover:bg-slate-700 transition-all duration-300 transform hover:scale-105 border border-slate-200 dark:border-slate-700 shadow-lg hover:shadow-xl">
                   <div className="flex items-center justify-between mb-6">
                     <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r ${module.gradient} text-white shadow-lg`}>
