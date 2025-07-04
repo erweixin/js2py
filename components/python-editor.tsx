@@ -12,40 +12,24 @@ interface CodeBlock {
 interface PythonEditorProps {
   children: ReactNode
   title?: string
-  theme?: 'vs-light' | 'vs-dark'
+  theme?: 'vs-light' | 'vs-dark' | 'auto'
   readOnly?: boolean
   showOutput?: boolean
   compare?: boolean
-}
-
-// 解析 MDX 中的代码块
-const parseCodeBlocks = (children: ReactNode): CodeBlock[] => {
-  const blocks: CodeBlock[] = []
-  
-  React.Children.forEach(children, (child) => {
-    if (React.isValidElement(child) && child.type === 'pre') {
-      const codeElement = child.props.children
-      if (React.isValidElement(codeElement) && codeElement.type === 'code') {
-        const className = (codeElement.props as any).className || ''
-        const language = className.replace('language-', '')
-        const code = (codeElement.props as any).children || ''
-        
-        blocks.push({ language, code })
-      }
-    }
-  })
-  
-  return blocks
+  code?: any[]
+  height?: number
 }
 
 export default function PythonEditor({
-  children,
   title = 'Python 代码编辑器',
-  theme = 'vs-light',
+  theme = 'auto',
   readOnly = false,
   showOutput = true,
-  compare = false
+  compare = false,
+  code = [],
+  height = 300
 }: PythonEditorProps) {
+  
   const [pyodide, setPyodide] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [output, setOutput] = useState<string>('')
@@ -54,13 +38,51 @@ export default function PythonEditor({
   const [javascriptCode, setJavascriptCode] = useState<string>('')
   const [isRunning, setIsRunning] = useState(false)
   const [isClient, setIsClient] = useState(false)
+  const [currentTheme, setCurrentTheme] = useState<'vs-light' | 'vs-dark'>('vs-light')
   
-  const codeBlocks = parseCodeBlocks(children)
-  
+  console.log(currentTheme, title)
   // 检查是否在客户端
   useEffect(() => {
     setIsClient(true)
   }, [])
+  
+  // 检测暗色模式
+  useEffect(() => {
+    if (!isClient) return
+    
+    const checkTheme = () => {
+      // console.log(theme, title)
+      if (theme === 'auto') {
+        // 检查 HTML 元素是否有 dark 类
+        const isDark = document.documentElement.classList.contains('dark')
+        setCurrentTheme(isDark ? 'vs-dark' : 'vs-light')
+      } else {
+        setCurrentTheme(theme)
+      }
+    }
+    
+    // 初始检查
+    checkTheme()
+    
+    // 监听主题变化
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          checkTheme()
+        }
+      })
+    })
+    
+    // 观察 HTML 元素的 class 属性变化
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    })
+    
+    return () => {
+      observer.disconnect()
+    }
+  }, [isClient, theme])
   
   // 初始化 Pyodide
   useEffect(() => {
@@ -86,16 +108,16 @@ export default function PythonEditor({
   
   // 解析代码块
   useEffect(() => {
-    const pythonBlock = codeBlocks.find(block => block.language === 'python')
-    const jsBlock = codeBlocks.find(block => block.language === 'javascript' || block.language === 'js')
+    const pythonBlock = code.find(block => block.lang === 'python')
+    const jsBlock = code.find(block => block.lang === 'javascript' || block.language === 'js')
     
     if (pythonBlock) {
-      setPythonCode(pythonBlock.code)
+      setPythonCode(pythonBlock.value)
     }
     if (jsBlock) {
-      setJavascriptCode(jsBlock.code)
+      setJavascriptCode(jsBlock.value)
     }
-  }, [codeBlocks])
+  }, [code])
   
   // 运行 Python 代码
   const runPythonCode = async () => {
@@ -187,23 +209,23 @@ sys.stdout = sys.__stdout__
     )
   }
   
-  if (isLoading) {
-    return (
-      <div className="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
-        <div className="flex items-center justify-center h-32">
-          <div className="text-gray-600 dark:text-gray-400">
-            正在加载 Python 环境...
-          </div>
-        </div>
-      </div>
-    )
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
+  //       <div className="flex items-center justify-center h-32">
+  //         <div className="text-gray-600 dark:text-gray-400">
+  //           正在加载 Python 环境...
+  //         </div>
+  //       </div>
+  //     </div>
+  //   )
+  // }
   
   return (
     <div className="border rounded-lg overflow-hidden bg-white dark:bg-gray-900">
       {/* 标题栏 */}
       <div className="flex items-center justify-between px-4 py-2 bg-gray-100 dark:bg-gray-800 border-b">
-        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 m-0">
           {title}
         </h3>
         <div className="flex items-center space-x-2">
@@ -221,7 +243,7 @@ sys.stdout = sys.__stdout__
             disabled={isRunning || !pythonCode.trim()}
             className="px-3 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
           >
-            {isRunning ? '运行中...' : '运行 Python'}
+            {isLoading ? '加载 python中...' : isRunning ? '运行中...' : '运行 Python'}
           </button>
         </div>
       </div>
@@ -231,9 +253,9 @@ sys.stdout = sys.__stdout__
         {/* Python 编辑器 */}
         <div className="flex-1">
           <Editor
-            height="300px"
+            height={height}
             language="python"
-            theme={theme}
+            theme={currentTheme}
             value={pythonCode}
             onChange={(value) => setPythonCode(value || '')}
             options={{
@@ -252,9 +274,9 @@ sys.stdout = sys.__stdout__
         {compare && javascriptCode && (
           <div className="flex-1 border-l">
             <Editor
-              height="300px"
+              height={height}
               language="javascript"
-              theme={theme}
+              theme={currentTheme}
               value={javascriptCode}
               onChange={(value) => setJavascriptCode(value || '')}
               options={{
