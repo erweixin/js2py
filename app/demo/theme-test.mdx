@@ -1,0 +1,116 @@
+---
+title: 主题测试
+description: 测试 PythonEditor 的自动主题切换功能
+---
+
+# 主题测试页面
+
+这个页面用于测试 PythonEditor 组件的自动主题切换功能。
+
+## 自动主题模式（默认）
+
+下面的编辑器会自动跟随系统的暗色模式设置：
+
+<PythonEditor title="自动主题测试">
+```python
+# 这是一个自动主题的编辑器
+print("Hello, World!")
+
+# 测试一些 Python 语法
+def greet(name):
+    return f"你好, {name}!"
+
+print(greet("世界"))
+
+# 列表操作
+numbers = [1, 2, 3, 4, 5]
+squares = [n**2 for n in numbers]
+print(f"数字: {numbers}")
+print(f"平方: {squares}")
+```
+</PythonEditor>
+
+## 强制浅色主题
+
+<PythonEditor title="浅色主题测试" theme="vs-light">
+```python
+# 这是浅色主题的编辑器
+print("浅色主题")
+
+# 测试字典操作
+person = {
+    "name": "张三",
+    "age": 25,
+    "city": "北京"
+}
+
+for key, value in person.items():
+    print(f"{key}: {value}")
+```
+</PythonEditor>
+
+## 强制深色主题
+
+<PythonEditor title="深色主题测试" theme="vs-dark">
+```python
+# 这是深色主题的编辑器
+print("深色主题")
+
+# 测试集合操作
+set1 = {1, 2, 3, 4, 5}
+set2 = {4, 5, 6, 7, 8}
+
+print(f"集合1: {set1}")
+print(f"集合2: {set2}")
+print(f"并集: {set1 | set2}")
+print(f"交集: {set1 & set2}")
+```
+</PythonEditor>
+
+## 对比模式测试
+
+<PythonEditor title="对比模式测试" compare={true}>
+```python
+# Python 代码
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+# 计算前10个斐波那契数
+for i in range(10):
+    print(f"F({i}) = {fibonacci(i)}")
+```
+
+```javascript
+// JavaScript 代码
+function fibonacci(n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fibonacci(n-1) + fibonacci(n-2);
+}
+
+// 计算前10个斐波那契数
+for (let i = 0; i < 10; i++) {
+    console.log(`F(${i}) = ${fibonacci(i)}`);
+}
+```
+</PythonEditor>
+
+## 测试说明
+
+1. **自动主题模式**：编辑器会自动检测页面的暗色模式状态
+2. **手动主题模式**：可以强制使用浅色或深色主题
+3. **实时切换**：当你在页面中切换暗色模式时，自动主题的编辑器会实时响应
+4. **对比模式**：同时显示 Python 和 JavaScript 代码，方便对比学习
+
+## 如何切换主题
+
+在 fumadocs-ui 中，通常可以通过以下方式切换主题：
+
+1. 点击页面右上角的主题切换按钮
+2. 使用快捷键（通常是 `Ctrl/Cmd + K`）
+3. 在设置中手动切换
+
+切换主题后，标记为 `theme="auto"` 的编辑器会自动跟随主题变化。 

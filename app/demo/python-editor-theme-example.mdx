@@ -1,0 +1,120 @@
+---
+title: PythonEditor 主题功能示例
+description: 展示如何使用 PythonEditor 的自动主题切换功能
+---
+
+# PythonEditor 主题功能示例
+
+这个页面展示了 PythonEditor 组件的主题功能，包括自动主题切换和手动主题设置。
+
+## 自动主题模式
+
+默认情况下，PythonEditor 会自动跟随页面的暗色模式设置：
+
+<PythonEditor>
+```python
+# 这个编辑器会自动跟随系统主题
+print("Hello, Python!")
+
+# 简单的计算示例
+def calculate_sum(a, b):
+    return a + b
+
+result = calculate_sum(10, 20)
+print(f"10 + 20 = {result}")
+
+# 列表推导式
+numbers = [1, 2, 3, 4, 5]
+squares = [n**2 for n in numbers]
+print(f"数字: {numbers}")
+print(f"平方: {squares}")
+```
+</PythonEditor>
+
+## 手动设置主题
+
+你也可以手动指定主题，覆盖自动检测：
+
+### 浅色主题
+
+<PythonEditor theme="vs-light" title="test">
+```python !! py
+# 强制使用浅色主题
+print("这是浅色主题的编辑器12")
+
+# 字符串操作
+text = "Python 编程很有趣"
+print(f"原文本: {text}")
+print(f"大写: {text.upper()}")
+print(f"小写: {text.lower()}")
+print(f"长度: {len(text)}")
+```
+</PythonEditor>
+
+### 深色主题
+
+<PythonEditor theme="vs-dark">
+```python
+# 强制使用深色主题
+print("这是深色主题的编辑器")
+
+# 字典操作示例
+student = {
+    "name": "李四",
+    "age": 22,
+    "major": "计算机科学",
+    "grades": [85, 92, 78, 96]
+}
+
+print(f"学生信息: {student['name']}")
+print(f"平均分: {sum(student['grades']) / len(student['grades']):.1f}")
+```
+</PythonEditor>
+
+## 对比模式中的主题
+
+在对比模式下，两个编辑器都会使用相同的主题设置：
+
+<PythonEditor theme="vs-dark">
+```python
+# Python 版本
+def factorial(n):
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+# 计算 5 的阶乘
+result = factorial(5)
+print(f"5! = {result}")
+```
+
+```javascript
+// JavaScript 版本
+function factorial(n) {
+    if (n <= 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+// 计算 5 的阶乘
+const result = factorial(5);
+console.log(`5! = ${result}`);
+```
+</PythonEditor>
+
+## 主题切换效果
+
+当你切换页面的暗色模式时，标记为 `theme="auto"` 的编辑器会自动响应：
+
+1. **浅色模式**：编辑器使用浅色主题
+2. **深色模式**：编辑器使用深色主题
+3. **手动设置**：如果指定了具体主题，则不会自动切换
+
+## 使用建议
+
+- **推荐使用 `theme="auto"`**：让编辑器自动跟随用户偏好
+- **特殊情况**：如果需要在特定场景下保持固定主题，可以手动指定
+- **对比学习**：在对比模式下，建议使用自动主题以保持一致性
+
+这样，你的 Python 编辑器就能完美地融入整个网站的主题系统了！ 
