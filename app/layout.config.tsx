@@ -1,5 +1,5 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared"
-
+import logoPng from "@/public/logo.png"
 /**
  * Shared layout configurations
  *
@@ -9,12 +9,17 @@ import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared"
  */
 export const baseOptions: BaseLayoutProps = {
   nav: {
-    title: "js2py",
+    title: <img src={logoPng.src} alt="js2py" className="h-8" />  ,
   },
   links: [
     {
-      text: "Documentation",
+      text: "Docs",
       url: "/docs",
+      active: "nested-url",
+    },
+    {
+      text: "Github",
+      url: "https://github.com/erweixin/js2py",
       active: "nested-url",
     },
   ],
