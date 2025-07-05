@@ -32,7 +32,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link
-              href="/docs/module-0/getting-started"
+              href="/docs/module-0-python-introduction"
               className="group inline-flex items-center px-10 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-2xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-blue-500/25"
             >
               开始学习
@@ -108,21 +108,23 @@ export default function HomePage() {
               课程模块
             </h2>
             <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
-              10 个精心设计的模块，从入门到进阶，全面掌握 Python
+              12 个精心设计的模块，从入门到进阶，全面掌握 Python
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               { id: 0, link: "module-0-python-introduction", title: "入门引导", desc: "环境搭建与 pip、venv、pyenv 等核心工具", gradient: "from-blue-500 to-cyan-500" },
               { id: 1, link: "module-1-syntax-comparison", title: "语法映射", desc: "JS vs Python 语法对比", gradient: "from-green-500 to-emerald-500" },
-              { id: 2, title: "模块系统", desc: "Python 模块化与项目组织", gradient: "from-purple-500 to-violet-500" },
-              { id: 3, title: "面向对象", desc: "类、继承与函数式编程", gradient: "from-orange-500 to-red-500" },
-              { id: 4, title: "异步编程", desc: "async/await 与事件循环", gradient: "from-red-500 to-pink-500" },
-              { id: 5, title: "调试测试", desc: "单元测试与类型注解", gradient: "from-indigo-500 to-purple-500" },
-              { id: 6, title: "Web 开发", desc: "FastAPI 构建后端接口", gradient: "from-pink-500 to-rose-500" },
-              { id: 7, title: "数据处理", desc: "pandas 与自动化脚本", gradient: "from-teal-500 to-cyan-500" },
-              { id: 8, title: "实战项目", desc: "综合项目练习", gradient: "from-yellow-500 to-orange-500" },
-              { id: 9, title: "进阶方向", desc: "AI、自动化与学习资源", gradient: "from-slate-500 to-gray-500" }
+              { id: 2, link: "module-2-module-system", title: "模块系统", desc: "Python 模块化与项目组织", gradient: "from-purple-500 to-violet-500" },
+              { id: 3, link: "module-3-oop-functional", title: "面向对象", desc: "类、继承与函数式编程", gradient: "from-orange-500 to-red-500" },
+              { id: 4, link: "module-4-async-programming", title: "异步编程", desc: "async/await 与事件循环", gradient: "from-red-500 to-pink-500" },
+              { id: 5, link: "module-5-quality-testing-typing", title: "调试测试", desc: "单元测试与类型注解", gradient: "from-indigo-500 to-purple-500" },
+              { id: 6, link: "module-6-web-development", title: "Web 开发", desc: "FastAPI 构建后端接口", gradient: "from-pink-500 to-rose-500" },
+              { id: 7, link: "module-7-data-automation", title: "数据处理", desc: "pandas 与自动化脚本", gradient: "from-teal-500 to-cyan-500" },
+              { id: 8, link: "module-8-projects", title: "实战项目", desc: "综合项目练习", gradient: "from-yellow-500 to-orange-500" },
+              { id: 9, link: "module-9-advanced-topics", title: "进阶方向", desc: "AI、自动化与学习资源", gradient: "from-slate-500 to-gray-500" },
+              { id: 10, link: "module-10-common-pitfalls", title: "常见陷阱", desc: "JS vs Python 常见概念陷阱", gradient: "from-rose-500 to-fuchsia-500" },
+              { id: 11, link: "module-11-pythonic-code", title: "Pythonic 代码", desc: "学习编写地道的 Python 代码", gradient: "from-sky-500 to-indigo-500" }
             ].map((module) => (
               <Link
                 key={module.id}
@@ -233,7 +235,7 @@ export default function HomePage() {
               </div>
               <div className="text-center mt-12">
                 <Link
-                  href="/docs/module-0/getting-started"
+                  href="/docs/module-0-python-introduction"
                   className="group inline-flex items-center px-12 py-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-2xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-blue-500/25 text-lg"
                 >
                   立即开始学习
@@ -251,7 +253,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
             {[
-              { number: "10", label: "学习模块" },
+              { number: "12", label: "学习模块" },
               { number: "50+", label: "代码示例" },
               { number: "20+", label: "练习题" },
               { number: "4", label: "实战项目" }
