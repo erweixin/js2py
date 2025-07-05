@@ -69,14 +69,14 @@ export default function HomePage() {
                 gradient: "from-blue-500 to-cyan-500"
               },
               {
-                icon: "⚡",
-                title: "渐进式学习",
-                desc: "10 个模块循序渐进，从基础语法到实战项目，每个概念都有实际代码示例和练习题",
-                gradient: "from-green-500 to-emerald-500"
+                icon: "🎮",
+                title: "交互式练习",
+                desc: "每个模块都包含在线编程挑战，直接在浏览器中编码并获得即时反馈，巩固所学知识。",
+                gradient: "from-pink-500 to-rose-500"
               },
               {
                 icon: "💻",
-                title: "实战项目",
+                title: "实战驱动",
                 desc: "通过真实项目驱动学习，包括 Web 开发、数据处理、自动化脚本等实用技能",
                 gradient: "from-purple-500 to-pink-500"
               }
@@ -255,7 +255,7 @@ export default function HomePage() {
             {[
               { number: "12", label: "学习模块" },
               { number: "50+", label: "代码示例" },
-              { number: "20+", label: "练习题" },
+              { number: "12+", label: "在线挑战" },
               { number: "4", label: "实战项目" }
             ].map((stat, index) => (
               <div key={index} className="group">

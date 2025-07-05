@@ -1,8 +1,9 @@
 'use client'
 
 import * as React from 'react'
-import { useState, useEffect, ReactNode } from 'react'
-import Editor from '@monaco-editor/react'
+import { useState, useEffect, ReactNode, lazy, Suspense } from 'react'
+import { useMonacoManager } from './monaco-manager'
+import { VirtualizedEditor } from './virtualized-editor'
 
 interface CodeBlock {
   language: string
@@ -18,6 +19,162 @@ interface PythonEditorProps {
   compare?: boolean
   code?: any[]
   height?: number
+}
+
+// 全局 Pyodide 管理器
+class PyodideManager {
+  private static instance: PyodideManager
+  private pyodide: any = null
+  private isLoading = false
+  private loadPromise: Promise<any> | null = null
+  private subscribers: Set<(pyodide: any) => void> = new Set()
+
+  private constructor() {}
+
+  static getInstance(): PyodideManager {
+    if (!PyodideManager.instance) {
+      PyodideManager.instance = new PyodideManager()
+    }
+    return PyodideManager.instance
+  }
+
+  async getPyodide(): Promise<any> {
+    // 如果已经加载完成，直接返回
+    if (this.pyodide) {
+      return this.pyodide
+    }
+
+    // 如果正在加载，等待加载完成
+    if (this.loadPromise) {
+      return this.loadPromise
+    }
+
+    // 开始加载
+    this.isLoading = true
+    this.loadPromise = this.loadPyodide()
+    
+    try {
+      this.pyodide = await this.loadPromise
+      // 通知所有订阅者
+      this.subscribers.forEach(callback => callback(this.pyodide))
+      return this.pyodide
+    } catch (error) {
+      this.loadPromise = null
+      this.isLoading = false
+      throw error
+    } finally {
+      this.isLoading = false
+    }
+  }
+
+  private async loadPyodide(): Promise<any> {
+    try {
+      const pyodideInstance = await (globalThis as any).loadPyodide({
+        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.27.0/full/",
+      })
+      return pyodideInstance
+    } catch (error) {
+      console.error('Pyodide 初始化失败:', error)
+      throw error
+    }
+  }
+
+  subscribe(callback: (pyodide: any) => void): () => void {
+    this.subscribers.add(callback)
+    
+    // 如果已经加载完成，立即调用回调
+    if (this.pyodide) {
+      callback(this.pyodide)
+    }
+
+    // 返回取消订阅函数
+    return () => {
+      this.subscribers.delete(callback)
+    }
+  }
+
+  isPyodideLoading(): boolean {
+    return this.isLoading
+  }
+
+  isPyodideReady(): boolean {
+    return this.pyodide !== null
+  }
+}
+
+// 全局管理器实例
+const pyodideManager = PyodideManager.getInstance()
+// Monaco Editor 包装组件
+function MonacoEditorWrapper({
+  language,
+  value,
+  onChange,
+  theme,
+  height,
+  options,
+  ...props
+}: {
+  language: string
+  value: string
+  onChange?: (value: string | undefined) => void
+  theme: string
+  height: number
+  options: any
+  [key: string]: any
+}) {
+  const { isReady, isLoading, error } = useMonacoManager()
+
+  if (error) {
+    return (
+      <div className="border rounded p-4 bg-red-50 dark:bg-red-900/20">
+        <div className="text-red-600 dark:text-red-400 text-sm">
+          {error}
+        </div>
+      </div>
+    )
+  }
+
+  if (isLoading || !isReady) {
+    return (
+      <div className="border rounded p-4 bg-gray-50 dark:bg-gray-800">
+        <div className="flex items-center justify-center h-32">
+          <div className="text-gray-600 dark:text-gray-400 text-sm">
+            正在加载编辑器...
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <Suspense fallback={
+      <div className="border rounded p-4 bg-gray-50 dark:bg-gray-800">
+        <div className="flex items-center justify-center h-32">
+          <div className="text-gray-600 dark:text-gray-400 text-sm">
+            加载中...
+          </div>
+        </div>
+      </div>
+    }>
+      <VirtualizedEditor
+        height={height}
+        language={language}
+        theme={theme}
+        value={value}
+        onChange={onChange}
+        options={{
+          minimap: { enabled: false },
+          fontSize: 14,
+          lineNumbers: 'on',
+          roundedSelection: false,
+          scrollBeyondLastLine: false,
+          automaticLayout: true,
+          ...options
+        }}
+        {...props}
+      />
+    </Suspense>
+  )
 }
 
 export default function PythonEditor({
@@ -41,6 +198,7 @@ export default function PythonEditor({
   const [currentTheme, setCurrentTheme] = useState<'vs-light' | 'vs-dark'>('vs-light')
   
   console.log(currentTheme, title)
+  
   // 检查是否在客户端
   useEffect(() => {
     setIsClient(true)
@@ -51,7 +209,6 @@ export default function PythonEditor({
     if (!isClient) return
     
     const checkTheme = () => {
-      // console.log(theme, title)
       if (theme === 'auto') {
         // 检查 HTML 元素是否有 dark 类
         const isDark = document.documentElement.classList.contains('dark')
@@ -84,26 +241,26 @@ export default function PythonEditor({
     }
   }, [isClient, theme])
   
-  // 初始化 Pyodide
+  // 订阅 Pyodide 实例
   useEffect(() => {
     if (!isClient) return
-    
-    const initPython = async () => {
-      try {
-        // 使用全局的 loadPyodide 函数
-        const pyodideInstance = await (globalThis as any).loadPyodide({
-          indexURL: "https://cdn.jsdelivr.net/pyodide/v0.27.0/full/",
-        });
-        setPyodide(pyodideInstance)
-        setIsLoading(false)
-      } catch (err) {
+
+    // 订阅 Pyodide 实例变化
+    const unsubscribe = pyodideManager.subscribe((pyodideInstance) => {
+      setPyodide(pyodideInstance)
+      setIsLoading(false)
+    })
+
+    // 如果还没有开始加载，开始加载
+    if (!pyodideManager.isPyodideReady() && !pyodideManager.isPyodideLoading()) {
+      pyodideManager.getPyodide().catch((err) => {
         console.error('Pyodide 初始化失败:', err)
         setError('Python 环境初始化失败')
         setIsLoading(false)
-      }
+      })
     }
-    
-    initPython()
+
+    return unsubscribe
   }, [isClient])
   
   // 解析代码块
@@ -209,18 +366,6 @@ sys.stdout = sys.__stdout__
     )
   }
   
-  // if (isLoading) {
-  //   return (
-  //     <div className="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
-  //       <div className="flex items-center justify-center h-32">
-  //         <div className="text-gray-600 dark:text-gray-400">
-  //           正在加载 Python 环境...
-  //         </div>
-  //       </div>
-  //     </div>
-  //   )
-  // }
-  
   return (
     <div className="border rounded-lg overflow-hidden bg-white dark:bg-gray-900">
       {/* 标题栏 */}
@@ -252,42 +397,26 @@ sys.stdout = sys.__stdout__
       <div className="flex">
         {/* Python 编辑器 */}
         <div className="flex-1">
-          <Editor
-            height={height}
+          <MonacoEditorWrapper
             language="python"
             theme={currentTheme}
             value={pythonCode}
             onChange={(value) => setPythonCode(value || '')}
-            options={{
-              readOnly,
-              minimap: { enabled: false },
-              fontSize: 14,
-              lineNumbers: 'on',
-              roundedSelection: false,
-              scrollBeyondLastLine: false,
-              automaticLayout: true,
-            }}
+            height={height}
+            options={{ readOnly }}
           />
         </div>
         
         {/* JavaScript 编辑器（对比模式） */}
         {compare && javascriptCode && (
           <div className="flex-1 border-l">
-            <Editor
-              height={height}
+            <MonacoEditorWrapper
               language="javascript"
               theme={currentTheme}
               value={javascriptCode}
               onChange={(value) => setJavascriptCode(value || '')}
-              options={{
-                readOnly,
-                minimap: { enabled: false },
-                fontSize: 14,
-                lineNumbers: 'on',
-                roundedSelection: false,
-                scrollBeyondLastLine: false,
-                automaticLayout: true,
-              }}
+              height={height}
+              options={{ readOnly }}
             />
           </div>
         )}
