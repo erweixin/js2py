@@ -229,6 +229,13 @@ sys.stdout = sys.__stdout__
           {title}
         </h3>
         <div className="flex items-center space-x-2">
+          <button
+            onClick={runPythonCode}
+            disabled={isRunning || !pythonCode.trim()}
+            className="px-3 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
+          >
+            {isLoading ? '加载 python中...' : isRunning ? '运行中...' : '运行 Python'}
+          </button>
           {compare && javascriptCode && (
             <button
               onClick={runJavascriptCode}
@@ -238,13 +245,6 @@ sys.stdout = sys.__stdout__
               运行 JS
             </button>
           )}
-          <button
-            onClick={runPythonCode}
-            disabled={isRunning || !pythonCode.trim()}
-            className="px-3 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
-          >
-            {isLoading ? '加载 python中...' : isRunning ? '运行中...' : '运行 Python'}
-          </button>
         </div>
       </div>
       
